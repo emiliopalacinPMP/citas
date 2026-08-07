@@ -356,10 +356,21 @@ function mlabelISO(iso){ if(!iso) return null; var y=parseInt(iso.slice(0,4),10)
 function mlabel(x){ return isDate(x)? MESES[x.getMonth()+1]+' '+x.getFullYear() : null; }
 function daysBetween(isoA,isoB){ var a=new Date(isoA+'T00:00:00'),b=new Date(isoB+'T00:00:00'); return Math.round((a-b)/86400000); }
 function isNum(v){ return typeof v==='number' && isFinite(v); }
-function numOrNull(v){ return isNum(v)? v: null; }
+function numOrNull(v){
+  if(isNum(v)) return v;
+  if(typeof v==='string'){ var s=v.replace(/[,\s]/g,''); if(s!=='' && /^-?\d+(\.\d+)?$/.test(s)) return parseFloat(s); }
+  return null;
+}
 function isTime(v){ return v && typeof v==='object' && v.__time===true; }
-function tmin(v){ return isTime(v)? (v.h*60+v.m): null; }
-function thhmm(v){ return isTime(v)? pad(v.h)+':'+pad(v.m): null; }
+// hora en cualquier forma que devuelva gviz: {__time}, Date(1899,..,h,m), o texto "h:mm"
+function tHM(v){
+  if(isTime(v)) return {h:v.h,m:v.m};
+  if(isDate(v)) return {h:v.getHours(),m:v.getMinutes()};
+  if(typeof v==='string'){ var m=v.match(/^(\d{1,2}):(\d{2})/); if(m) return {h:+m[1],m:+m[2]}; }
+  return null;
+}
+function tmin(v){ var t=tHM(v); return t? t.h*60+t.m : null; }
+function thhmm(v){ var t=tHM(v); return t? pad(t.h)+':'+pad(t.m) : null; }
 function S(v){ return (v==null? '' : String(v)).trim(); }
 
 /* round-half-to-even, igual que Python round() */
