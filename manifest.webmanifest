@@ -1,0 +1,13 @@
+{
+  "name": "Panel de Cuidado · María Stella",
+  "short_name": "Cuidado",
+  "start_url": "panel-cuidado.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef2f7",
+  "theme_color": "#0d7d8c",
+  "icons": [
+    { "src": "icon-panel.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-panel.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
