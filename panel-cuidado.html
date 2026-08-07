@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<style>
+#__ov{position:fixed;inset:0;background:#eef2f7;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px}
+#__ov .__ovbox{max-width:420px;text-align:center;background:#fff;border:1px solid #e5e9f0;border-radius:16px;padding:26px 22px;box-shadow:0 6px 24px rgba(15,23,42,.08);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+#__ov h2{margin:0 0 8px;font-size:18px;color:#0f172a}
+#__ov p{margin:6px 0;font-size:14px;color:#475569;line-height:1.5}
+#__ov .spin{width:34px;height:34px;border:4px solid #dbe3ef;border-top-color:#0d7d8c;border-radius:50%;margin:4px auto 14px;animation:__sp 1s linear infinite}
+@keyframes __sp{to{transform:rotate(360deg)}}
+#__ov button,#__bar button{cursor:pointer;border:none;border-radius:9px;background:#0d7d8c;color:#fff;font-weight:700;padding:9px 16px;font-size:14px;margin-top:10px}
+#__bar{position:fixed;left:0;right:0;bottom:0;z-index:9998;background:#0f172a;color:#fff;font-size:12.5px;
+ display:flex;align-items:center;justify-content:center;gap:12px;padding:7px 12px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+#__bar button{background:#1f2b45;padding:5px 11px;font-size:12.5px;margin:0}
+body{padding-bottom:44px}
+</style>
+
+<title>Panel de Cuidado · Citas y Medicamentos</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#ffffff; --ink:#0f172a; --muted:#64748b; --line:#e5e9f0;
+    --brand:#0d7d8c; --brand2:#1d6fb8; --accent:#7c3aed;
+    --ok:#0f9d6b; --warn:#d97706; --bad:#dc2626; --soft:#f1f5f9;
+    --c1:#0d7d8c; --c2:#1d6fb8; --c3:#7c3aed; --c4:#d97706; --c5:#0f9d6b; --c6:#db2777; --c7:#64748b; --c8:#0891b2;
+    --shadow:0 1px 2px rgba(15,23,42,.06),0 6px 20px rgba(15,23,42,.06);
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:#eef2f7;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.45}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 20px 60px}
+  /* header */
+  .top{background:linear-gradient(120deg,#0d7d8c 0%,#1d6fb8 60%,#3b5bdb 100%);color:#fff;
+    border-radius:20px;padding:22px 26px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .top h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.2px}
+  .top .sub{opacity:.9;font-size:13px;margin-top:4px}
+  .pchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .pchip{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:999px;
+    padding:6px 12px;font-size:12.5px;display:flex;gap:6px;align-items:center}
+  .pchip b{font-weight:600}
+  .genstamp{position:absolute;top:18px;right:22px;font-size:11.5px;opacity:.85;text-align:right}
+  /* tabs */
+  .tabs{display:flex;gap:6px;margin:18px 0 16px;flex-wrap:wrap}
+  .tab{background:#fff;border:1px solid var(--line);color:var(--muted);border-radius:999px;
+    padding:9px 18px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s}
+  .tab:hover{color:var(--ink)}
+  .tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  /* kpi */
+  .kgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+  @media(max-width:960px){.kgrid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.kgrid{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;box-shadow:var(--shadow)}
+  .kpi .lbl{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+  .kpi .num{font-size:27px;font-weight:750;margin-top:6px;letter-spacing:-.5px}
+  .kpi .foot{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .kpi .bar{height:4px;border-radius:3px;margin-top:10px;background:var(--soft);overflow:hidden}
+  .kpi .bar>i{display:block;height:100%}
+  /* panels */
+  .cards{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:14px}
+  .card{grid-column:span 12;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 20px;box-shadow:var(--shadow)}
+  .card.h6{grid-column:span 6}.card.h4{grid-column:span 4}.card.h8{grid-column:span 8}
+  @media(max-width:900px){.card.h6,.card.h4,.card.h8{grid-column:span 12}}
+  .card h3{margin:0 0 2px;font-size:15px;font-weight:700}
+  .card .hint{font-size:12px;color:var(--muted);margin-bottom:14px}
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);
+    font-weight:700;padding:8px 10px;border-bottom:2px solid var(--line);position:sticky;top:0;background:#fff}
+  td{padding:9px 10px;border-bottom:1px solid var(--soft);vertical-align:top}
+  tr:hover td{background:#fafcff}
+  .tbwrap{max-height:520px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+  .badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap}
+  .b-ok{background:#e3f6ee;color:#0b7a52}.b-warn{background:#fdf0dd;color:#a15c07}
+  .b-bad{background:#fde5e5;color:#b91c1c}.b-info{background:#e5eefc;color:#1a4fa0}
+  .b-mut{background:#eef1f5;color:#556}
+  .badge.sm{font-size:10.5px;padding:1px 7px}
+  td.nw{white-space:nowrap}
+  .scbox{margin-top:12px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.5}
+  .scbox.ok{background:#e3f6ee;border-color:#bfe6d4;color:#0b7a52}
+  .pill{font-size:11px;color:var(--muted)}
+  .days{font-weight:700}
+  .days.soon{color:var(--bad)}.days.mid{color:var(--warn)}.days.far{color:var(--ok)}
+  .pebox{border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:12px;padding:14px 16px;background:#fbfdff}
+  .pehead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+  .pedate{font-size:22px;font-weight:800;letter-spacing:-.5px}
+  .pelist{display:flex;flex-direction:column;gap:8px}
+  .perow{border-top:1px solid var(--soft);padding-top:8px}
+  .pemed{font-weight:650}
+  .pemeta{font-size:12px;color:var(--muted);margin-top:1px}
+  .ovbox{border:1px solid #fecaca;background:#fef2f2;border-left:4px solid var(--bad);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+  .ovhd{font-weight:800;color:var(--bad);margin-bottom:6px}
+  .ovrow{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid #fde3e3;font-size:13px;flex-wrap:wrap}
+  .ovd{color:var(--bad);font-weight:600;white-space:nowrap;font-size:12.5px}
+  /* filters */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+  .filters input,.filters select{border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:13px;font-family:inherit;background:#fff}
+  .filters input{min-width:190px}
+  .fbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;font-size:12.5px;cursor:pointer;font-weight:600;color:var(--muted)}
+  .fbtn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .notecell{max-width:520px;color:#334155;font-size:12.5px}
+  .notecell .more{color:var(--brand2);cursor:pointer;font-weight:600}
+  .clip{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .note2{margin-top:7px;font-size:12.5px}
+  .note2 summary{cursor:pointer;color:var(--brand2);font-weight:600}
+  .note2>div{margin-top:6px;color:#334155;white-space:pre-wrap;background:#f8fafc;border:1px solid var(--soft);border-radius:8px;padding:8px 10px}
+  .medgrp{border:1px solid var(--line);border-radius:12px;margin-bottom:8px;overflow:hidden}
+  .medgrp>summary{cursor:pointer;list-style:none;padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fbfdff}
+  .medgrp>summary::-webkit-details-marker{display:none}
+  .medgrp>summary .gname{font-weight:700;flex:1;min-width:180px;overflow-wrap:anywhere}
+  .medgrp>summary .gc{font-size:12px;color:var(--muted)}
+  .medgrp .gbody{padding:4px 6px 8px}
+  .medgrp .chev{color:var(--muted);font-size:12px}
+  .medgrp[open]>summary{border-bottom:1px solid var(--line)}
+  tr.clk{cursor:pointer}
+  tr.clk:hover td{background:#f2f8ff}
+  td.cx{color:var(--muted);width:22px;text-align:center;font-size:11px}
+  .detrow>td{background:#fbfdff;padding:0}
+  .costbox{padding:12px 16px}
+  .crow{display:flex;justify-content:space-between;gap:16px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .crow span:first-child{color:var(--muted)}
+  .cdesc{margin-top:10px;white-space:pre-wrap;color:#334155;font-size:12.5px;background:#fff;border:1px solid var(--soft);border-radius:8px;padding:9px 11px}
+  .cardsum{cursor:pointer;font-weight:700;font-size:15px;list-style:none}
+  .cardsum::-webkit-details-marker{display:none}
+  .cardsum::before{content:"▸ ";color:var(--muted)}
+  details[open]>.cardsum::before{content:"▾ "}
+  .hidden{display:none!important}
+  /* chart */
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:12px;color:#334155}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .barrow{display:grid;grid-template-columns:minmax(70px,130px) 1fr max-content;align-items:center;gap:10px;margin:7px 0;font-size:12.5px}
+  .barrow>div:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .barrow .track{background:var(--soft);border-radius:6px;height:16px;overflow:hidden;min-width:24px}
+  .barrow .track>i{display:block;height:100%;border-radius:6px}
+  .barrow .vv{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .split{display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:center}
+  .split svg{width:100%;height:auto;max-width:140px}
+  @media(max-width:560px){.split{grid-template-columns:118px 1fr;gap:12px}}
+  .foothint{font-size:11.5px;color:var(--muted);margin-top:10px}
+  .sub2{font-size:12px;color:var(--muted)}
+  .minialert{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:12px;padding:11px 14px;font-size:12.5px;margin-top:6px}
+  .stack{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .medgroup{margin-bottom:10px}
+  .medgrouphd{font-size:12.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;
+    margin:0 0 8px;padding:8px 2px;cursor:pointer;list-style:none;border-bottom:1px solid var(--line)}
+  .medgrouphd::-webkit-details-marker{display:none}
+  .medgrouphd::before{content:"▸ ";}
+  details.medgroup[open]>.medgrouphd::before{content:"▾ "}
+  details.medgroup[open]>.medgrouphd{margin-bottom:10px}
+  .mtile{border:1px solid var(--line);border-radius:12px;padding:11px 13px;overflow:hidden}
+  .mtile .mn{font-weight:700;font-size:12.5px;margin-bottom:5px;overflow-wrap:anywhere;word-break:break-word}
+  #tMedLog td:first-child b,#medTiles .mn{overflow-wrap:anywhere}
+  .mtile .md{font-size:11.5px;color:var(--muted)}
+  a.file{color:var(--brand2);text-decoration:none}
+  .footer{text-align:center;color:var(--muted);font-size:11.5px;margin-top:26px;line-height:1.6}
+</style>
+</head>
+<body>
+<div id="__ov"><div class="__ovbox"><div class="spin"></div><h2>Cargando datos en vivo…</h2><p>Leyendo el registro más reciente.</p></div></div>
+<div class="wrap">
+  <div class="top">
+    <div class="genstamp" id="genstamp"></div>
+    <h1>Panel de Cuidado · Citas y Medicamentos</h1>
+    <div class="sub" id="psub"></div>
+    <div class="pchips" id="pchips"></div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-t="resumen">Resumen general</button>
+    <button class="tab" data-t="citas">Citas</button>
+    <button class="tab" data-t="medicamentos">Medicamentos</button>
+    <button class="tab" data-t="finanzas">Finanzas</button>
+  </div>
+
+  <!-- RESUMEN -->
+  <section id="v-resumen">
+    <div class="kgrid" id="kpis"></div>
+    <div class="cards">
+      <div class="card h6" style="border:1px solid #cfe0f7;background:linear-gradient(180deg,#f7faff,#fff)">
+        <h3 id="resPendTitle">Citas pendientes</h3>
+        <div class="hint">Lo que está por agendar o próximo a ocurrir.</div>
+        <div id="resPend"></div>
+      </div>
+      <div class="card h6" style="border:1px solid #fed7aa;background:linear-gradient(180deg,#fffbf5,#fff)">
+        <h3>Cobro de gestiones</h3>
+        <div class="hint">Pendiente de pago e historial de cortes.</div>
+        <div id="resFin"></div>
+      </div>
+      <div class="card h8">
+        <h3>Próxima entrega pendiente</h3>
+        <div class="hint">La siguiente recogida de medicamentos programada. Las demás quedan en la pestaña Medicamentos.</div>
+        <div id="miniProx"></div>
+      </div>
+      <div class="card h4">
+        <h3>Citas por estado</h3>
+        <div class="hint">Distribución del histórico de citas.</div>
+        <div id="donutEstado"></div>
+      </div>
+      <div class="card h6">
+        <h3>Actividad de citas por mes</h3>
+        <div class="hint">Número de citas atendidas o agendadas por mes.</div>
+        <div id="barCitMes"></div>
+      </div>
+      <div class="card h6">
+        <h3>Entregas de medicamentos por mes</h3>
+        <div class="hint">Histórico entregado y lo programado a futuro.</div>
+        <div id="barEntMes"></div>
+      </div>
+      <div class="card h8">
+        <h3>Citas por especialidad</h3>
+        <div id="barEsp"></div>
+      </div>
+      <div class="card h4">
+        <h3>Pagos por mes</h3>
+        <div class="hint">Total pagado por mes (honorarios + copagos).</div>
+        <div id="barFin"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CITAS -->
+  <section id="v-citas" class="hidden">
+    <div class="card" style="border:1px solid #cfe0f7;background:linear-gradient(180deg,#f7faff,#fff)">
+      <h3 id="citPendTitle">Citas pendientes</h3>
+      <div class="hint">Citas por agendar o próximas. Toca "ver más" para el detalle.</div>
+      <div id="citPend"></div>
+    </div>
+
+    <div class="cards">
+      <div class="card h4">
+        <h3>Resumen de citas realizadas</h3>
+        <div id="citResumen"></div>
+      </div>
+      <div class="card h8">
+        <h3>Realizadas por especialidad</h3>
+        <div class="hint">Cuántas citas se han atendido en cada especialidad.</div>
+        <div id="citRealEsp"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Detalle de citas realizadas</h3>
+      <div class="hint">Historial completo, por si necesitas consultar una cita puntual.</div>
+      <div class="filters">
+        <input id="cSearch" placeholder="Buscar doctor, sede, nota…">
+        <select id="cEsp"><option value="">Todas las especialidades</option></select>
+      </div>
+      <div class="tbwrap">
+        <table id="tCitas"><thead><tr>
+          <th>Fecha</th><th>Especialidad</th><th>Doctor</th><th>Sede</th><th>Nota</th>
+        </tr></thead><tbody></tbody></table>
+      </div>
+      <div class="foothint" id="cCount"></div>
+    </div>
+  </section>
+
+  <!-- MEDICAMENTOS -->
+  <section id="v-medicamentos" class="hidden">
+    <div class="cards">
+      <div class="card h5" style="grid-column:span 12">
+        <h3>Medicamentos (resumen por fármaco)</h3>
+        <div class="hint">Cada fármaco distinto: estado, entregas registradas, última entrega y duración de la fórmula.</div>
+        <div class="filters"><input id="mSearch" placeholder="Buscar medicamento…"></div>
+        <div id="medTiles"></div>
+      </div>
+      <div class="card">
+        <h3>Bitácora de entregas (agrupada por medicamento)</h3>
+        <div class="hint">Cada fármaco reúne todas sus entregas. Toca un medicamento para desplegar su historial.</div>
+        <div class="filters">
+          <input id="mlSearch" placeholder="Buscar medicamento…">
+          <span style="flex:1"></span>
+          <button class="fbtn active" data-ml="">Todos</button>
+          <button class="fbtn" data-ml="fut">Con entregas futuras</button>
+        </div>
+        <div id="medGroups"></div>
+        <div class="foothint" id="mlCount"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINANZAS -->
+  <section id="v-finanzas" class="hidden">
+    <div class="kgrid" id="finKpis" style="grid-template-columns:repeat(3,1fr)"></div>
+    <div id="sinCorte"></div>
+
+    <div class="card" id="pendCard" style="margin-top:14px;border:1px solid #fed7aa;background:linear-gradient(180deg,#fffbf5,#fff)">
+      <div id="pendHead"></div>
+      <div class="hint">Gestiones del último corte, aún sin pagar. Cobro = horas × tarifa + copagos.</div>
+      <div class="tbwrap" style="max-height:none">
+        <table id="tPend"><thead><tr>
+          <th>Fecha</th><th>Horas</th><th>Honorarios</th><th>Copago</th><th>Total</th><th>Detalle</th>
+        </tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card h8">
+        <h3>Historial de legalizaciones (cortes de cobro)</h3>
+        <div class="hint">Cada corte agrupa las gestiones que se cobran juntas. El último está pendiente de pago.</div>
+        <div class="tbwrap" style="max-height:none">
+          <table id="tLeg"><thead><tr>
+            <th>Corte</th><th>Período</th><th>Horas</th><th>Honorarios</th><th>Copagos</th><th>Total</th><th>Estado</th>
+          </tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+      <div class="card h4">
+        <h3>Pagos por mes</h3>
+        <div class="hint">Total cobrado por mes (honorarios + copagos).</div>
+        <div id="barFin2"></div>
+      </div>
+    </div>
+
+    <details class="card" style="margin-top:14px">
+      <summary class="cardsum">Todas las gestiones · ver historial completo</summary>
+      <div class="hint" style="margin-top:12px">Historial completo. Los montos menores a $100 se registran como trámite sin valor monetario.</div>
+      <div class="filters">
+        <input id="fSearch" placeholder="Buscar descripción…">
+        <span style="flex:1"></span>
+        <button class="fbtn active" data-fl="">Todos los cortes</button>
+        <button class="fbtn" data-fl="pend">Solo pendiente</button>
+      </div>
+      <div class="tbwrap">
+        <div class="hint" style="margin:0 0 8px">Haz clic en una gestión para ver el desglose de su costo.</div>
+        <table id="tFin"><thead><tr>
+          <th></th><th>Fecha</th><th>Total</th><th>Corte</th><th>Estado</th>
+        </tr></thead><tbody></tbody></table>
+      </div>
+      <div class="foothint" id="fCount"></div>
+    </details>
+  </section>
+
+  <div class="footer" id="footer"></div>
+</div>
+
+<script>
+/* sheetlib.js — replica en JavaScript de build.py.
+   Convierte las filas (ya decodificadas) de cada hoja del Google Sheet en el mismo
+   objeto DATA que consume la plantilla. Probado contra data.json (Python). */
+(function(global){
+'use strict';
+
+var MESES=['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+var TARIFA_HORA=50000;
+
+function isDate(x){ return (x instanceof Date) && !isNaN(x.getTime()); }
+function pad(n){ return (n<10?'0':'')+n; }
+function isoOf(x){ if(!isDate(x)) return null; return x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate()); }
+function yearOf(iso){ return iso? parseInt(iso.slice(0,4),10): null; }
+function ddmmyyyy(x){ if(!isDate(x)) return null; return pad(x.getDate())+'/'+pad(x.getMonth()+1)+'/'+x.getFullYear(); }
+function hasTime(x){ return isDate(x) && (x.getHours()||x.getMinutes()); }
+function mlabelISO(iso){ if(!iso) return null; var y=parseInt(iso.slice(0,4),10),m=parseInt(iso.slice(5,7),10); return MESES[m]+' '+y; }
+function mlabel(x){ return isDate(x)? MESES[x.getMonth()+1]+' '+x.getFullYear() : null; }
+function daysBetween(isoA,isoB){ var a=new Date(isoA+'T00:00:00'),b=new Date(isoB+'T00:00:00'); return Math.round((a-b)/86400000); }
+function isNum(v){ return typeof v==='number' && isFinite(v); }
+function numOrNull(v){ return isNum(v)? v: null; }
+function isTime(v){ return v && typeof v==='object' && v.__time===true; }
+function tmin(v){ return isTime(v)? (v.h*60+v.m): null; }
+function thhmm(v){ return isTime(v)? pad(v.h)+':'+pad(v.m): null; }
+function S(v){ return (v==null? '' : String(v)).trim(); }
+
+/* round-half-to-even, igual que Python round() */
+function pyround(x, nd){
+  nd=nd||0;
+  if(x==null||!isFinite(x)) return x;
+  var f=Math.pow(10,nd), y=x*f;
+  var r=Math.round(y);
+  // corrección para .5 exacto -> par
+  if(Math.abs(y-(Math.floor(y)+0.5))<1e-9){
+    var fl=Math.floor(y);
+    r=(fl%2===0)? fl: fl+1;
+  }
+  return r/f;
+}
+
+function computeDATA(sheets, todayDate){
+  var TODAY_ISO=isoOf(todayDate);
+  var pac=sheets.Paciente||[], cit=sheets.Citas||[], med=sheets.Medicamentos||[], fin=sheets.Finanzas||[];
+
+  /* ---------- PACIENTE ---------- */
+  var p=pac[0]||[];
+  var fnac=p[3];
+  var edad=null;
+  if(isDate(fnac)){
+    edad=todayDate.getFullYear()-fnac.getFullYear();
+    if(todayDate.getMonth()<fnac.getMonth() || (todayDate.getMonth()===fnac.getMonth() && todayDate.getDate()<fnac.getDate())) edad--;
+  }
+  var paciente={nombre:p[1],fecha_nac:isoOf(p[3]),edad:edad,id:p[4],eps:p[5],
+    sangre:S(p[6]).toUpperCase(),acudiente:p[7],tel_emergencia:p[8]};
+
+  /* ---------- CITAS ---------- */
+  var citas=[];
+  cit.forEach(function(r){
+    var fh=r[5];
+    var estado=S(r[6]);
+    var cumplida=(estado.toLowerCase()==='cumplida'||estado.toLowerCase()==='realizada');
+    var estado_disp=cumplida?'Cumplida':estado;
+    var fecha=isoOf(r[5]);
+    var fecha_txt = hasTime(r[5]) ? (ddmmyyyy(r[5])+' '+pad(r[5].getHours())+':'+pad(r[5].getMinutes()))
+                    : (isDate(fh)? ddmmyyyy(fh) : 'Sin fecha');
+    var futura = (!!fecha && fecha>=TODAY_ISO && !cumplida) || (estado.toLowerCase()==='pendiente');
+    citas.push({id:r[0],especialidad:S(r[2]),doctor:S(r[3]),sede:S(r[4]),fecha:fecha,
+      fecha_txt:fecha_txt,estado:estado_disp,cumplida:cumplida,futura:futura,
+      mes:mlabel(r[5]),notas:S(r[11])});
+  });
+
+  /* ---------- MEDICAMENTOS ---------- */
+  var med_log=[];
+  med.forEach(function(r){
+    var prox=(isDate(r[11]) && r[11].getFullYear()<2100)? isoOf(r[11]) : null;
+    med_log.push({id:r[0],medicamento:S(r[2]),cant_form:numOrNull(r[3]),
+      fecha_formula:isoOf(r[4]),duracion:numOrNull(r[5]),entrega_actual:numOrNull(r[6]),
+      cant_eps:numOrNull(r[7]),fecha_eps:isoOf(r[8]),cant_hogar:numOrNull(r[9]),fecha_hogar:isoOf(r[10]),
+      proxima:prox,estado:S(r[14]),comentario:S(r[15])});
+  });
+
+  // resumen por medicamento distinto
+  var byname={};
+  med.forEach(function(r){ var k=S(r[2]); (byname[k]=byname[k]||[]).push(r); });
+  var med_sum=[];
+  Object.keys(byname).forEach(function(name){
+    var rs=byname[name];
+    var latest=rs[0], latestKey=null;
+    rs.forEach(function(x){
+      var k=isoOf(x[10])||isoOf(x[8])||isoOf(x[4])||'1900-01-01';
+      if(latestKey===null||k>latestKey){ latestKey=k; latest=x; }  // primer máximo (como max() de Python)
+    });
+    var activo=rs.some(function(x){ return S(x[14])==='Activo'; });
+    var lastdel=null;
+    rs.forEach(function(x){
+      var dd=isoOf(x[10])||isoOf(x[8]);
+      if(dd && dd<=TODAY_ISO && yearOf(dd)<2100 && (lastdel===null||dd>lastdel)) lastdel=dd;
+    });
+    med_sum.push({medicamento:name,entregas:rs.length,estado:activo?'Activo':'Inactivo',
+      ultima_entrega:lastdel,duracion:numOrNull(latest[5])});
+  });
+  med_sum.sort(function(a,b){ return a.medicamento.toLowerCase().localeCompare(b.medicamento.toLowerCase()); });
+
+  // entregas programadas NO entregadas (activas)
+  var prog=[];
+  med.forEach(function(r){
+    if(S(r[14])!=='Activo') return;
+    var fe=isoOf(r[8]), fhog=isoOf(r[10]), chog=numOrNull(r[9]);
+    var entregada=(fhog!==null)||(chog!==null && chog!==0);
+    if(entregada) return;
+    if(!fe || yearOf(fe)>=2100) return;
+    prog.push({fecha:fe,medicamento:S(r[2]),entrega:numOrNull(r[6]),duracion:numOrNull(r[5]),
+      mes:mlabelISO(fe),via:'EPS/Farmacia',vencida:fe<TODAY_ISO,dias:daysBetween(fe,TODAY_ISO)});
+  });
+  prog.sort(function(a,b){ return a.fecha.localeCompare(b.fecha); });
+  var fut=prog;
+  var _fut_next=prog.filter(function(x){ return !x.vencida; });
+  var venc=prog.filter(function(x){ return x.vencida; });
+
+  var proxima_entrega=null;
+  if(_fut_next.length){
+    var fd=_fut_next[0].fecha;
+    var items=_fut_next.filter(function(x){ return x.fecha===fd; });
+    var resto=_fut_next.filter(function(x){ return x.fecha!==fd; });
+    proxima_entrega={fecha:fd,dias:daysBetween(fd,TODAY_ISO),mes:items[0].mes,items:items,
+      restantes:resto.length,siguiente:resto.length?resto[0].fecha:null,ultima:_fut_next[_fut_next.length-1].fecha};
+  }
+  var entregas_pendientes=venc;
+
+  // citas: pendientes vs realizadas
+  var cit_pend=citas.filter(function(c){ return c.futura; });
+  var cit_real=citas.filter(function(c){ return !c.futura; });
+  var _rc={}; cit_real.forEach(function(c){ _rc[c.especialidad]=(_rc[c.especialidad]||0)+1; });
+  var _rcList=Object.keys(_rc).map(function(k){ return {k:k,v:_rc[k]}; }).sort(function(a,b){ return b.v-a.v; });
+  var _rd=cit_real.map(function(c){ return c.fecha; }).filter(Boolean);
+  var citas_resumen={n_pend:cit_pend.length,n_real:cit_real.length,por_esp:_rcList,
+    desde:_rd.length?_rd.slice().sort()[0]:null,hasta:_rd.length?_rd.slice().sort()[_rd.length-1]:null};
+
+  /* ---------- FINANZAS ---------- */
+  var fin_mov=[], tot_copagos=0,tot_honor=0,tot_gest=0,ncop=0;
+  var by_month_fin={};
+  fin.forEach(function(r){
+    var val=numOrNull(r[7]);
+    var copago=(val!==null && val>=100)? val: 0;
+    var hi=tmin(r[3]), hf=tmin(r[4]);
+    var mins=(hi!==null && hf!==null && hf>=hi)? (hf-hi): 0;
+    var horas=pyround(mins/60,2);
+    var honor_ex=mins*TARIFA_HORA/60.0;
+    var total_ex=honor_ex+copago;
+    if(copago) ncop++;
+    tot_copagos+=copago; tot_honor+=honor_ex; tot_gest+=total_ex;
+    var ml=mlabel(r[2]); if(ml){ by_month_fin[ml]=(by_month_fin[ml]||0)+total_ex; }
+    var lote=numOrNull(r[14]); if(lote!==null) lote=Math.round(lote);
+    fin_mov.push({id:r[0],fecha:isoOf(r[2]),fecha_txt:isDate(r[2])?ddmmyyyy(r[2]):'',
+      tipo:S(r[5]),copago:copago||null,horas:horas,honorarios:pyround(honor_ex),
+      total:pyround(total_ex),_honor_ex:honor_ex,_total_ex:total_ex,
+      hora_ini:thhmm(r[3]),hora_fin:thhmm(r[4]),minutos:mins,
+      mes:mlabel(r[2]),descripcion:S(r[8]),lote:lote});
+  });
+  fin_mov.sort(function(a,b){ return (b.fecha||'').localeCompare(a.fecha||''); });
+
+  /* ---------- LEGALIZACIONES ---------- */
+  var legs={};
+  fin_mov.forEach(function(m){
+    if(m.lote===null||m.lote===undefined) return;
+    var g=legs[m.lote]||(legs[m.lote]={n:0,total:0,honor:0,copagos:0,horas:0,fmin:null,fmax:null});
+    g.n++; g.total+=m.total; g.honor+=m.honorarios; g.copagos+=(m.copago||0); g.horas+=m.horas;
+    var fd=m.fecha;
+    if(fd){ if(!g.fmin||fd<g.fmin) g.fmin=fd; if(!g.fmax||fd>g.fmax) g.fmax=fd; }
+  });
+  var loteKeys=Object.keys(legs).map(Number).sort(function(a,b){ return a-b; });
+  var max_lote=loteKeys.length?loteKeys[loteKeys.length-1]:null;
+  var legalizaciones=loteKeys.map(function(lote){
+    var g=legs[lote];
+    return {lote:lote,n:g.n,total:pyround(g.total),honorarios:pyround(g.honor),copagos:pyround(g.copagos),
+      horas:pyround(g.horas,1),desde:g.fmin,hasta:g.fmax,pendiente:lote===max_lote,
+      estado:lote===max_lote?'Pendiente de pago':'Legalizada'};
+  });
+  var pendiente_total=max_lote!==null?pyround(legs[max_lote].total):0;
+  var pendiente_n=max_lote!==null?legs[max_lote].n:0;
+  var legalizado_total=pyround(loteKeys.reduce(function(s,l){ return s+legs[l].total; },0));
+  var pagado_total=pyround(loteKeys.reduce(function(s,l){ return l!==max_lote? s+legs[l].total: s; },0));
+  var finByFecha=fin_mov.slice().sort(function(a,b){ return (a.fecha||'').localeCompare(b.fecha||''); });
+  var pendiente_items=finByFecha.filter(function(m){ return m.lote===max_lote; });
+  var sin_corte=finByFecha.filter(function(m){ return m.lote===null||m.lote===undefined; });
+  var sin_corte_total=pyround(sin_corte.reduce(function(s,m){ return s+m.total; },0));
+  var sin_corte_n=sin_corte.length;
+  var sin_corte_items=sin_corte.map(function(m){ return {fecha_txt:m.fecha_txt,total:m.total,descripcion:m.descripcion}; });
+
+  /* ---------- GRAFICOS ---------- */
+  var cit_estado={}; citas.forEach(function(c){ cit_estado[c.estado]=(cit_estado[c.estado]||0)+1; });
+  var cit_esp={}; citas.forEach(function(c){ cit_esp[c.especialidad]=(cit_esp[c.especialidad]||0)+1; });
+  function counterList(o){ return Object.keys(o).map(function(k){ return {k:k,v:o[k]}; }); }
+  // citas por mes (cronológico)
+  var citMes={}; cit.forEach(function(r){ if(isDate(r[5])){ var key=r[5].getFullYear()*100+(r[5].getMonth()+1); citMes[key]=(citMes[key]||0)+1; } });
+  function monthList(o){ return Object.keys(o).map(Number).sort(function(a,b){ return a-b; }).map(function(key){
+    var y=Math.floor(key/100), m=key%100; return {k:MESES[m]+' '+y, v:o[key]}; }); }
+  var cit_mes_l=monthList(citMes);
+  // entregas realizadas por mes
+  var entMes={}; med.forEach(function(r){ var dd=isoOf(r[10])||isoOf(r[8]); if(dd && dd<=TODAY_ISO && yearOf(dd)<2100){ var key=parseInt(dd.slice(0,4))*100+parseInt(dd.slice(5,7)); entMes[key]=(entMes[key]||0)+1; } });
+  var ent_mes_l=monthList(entMes);
+  // entregas futuras por mes
+  var futMes={}; fut.forEach(function(f){ var key=parseInt(f.fecha.slice(0,4))*100+parseInt(f.fecha.slice(5,7)); futMes[key]=(futMes[key]||0)+1; });
+  var fut_mes_l=monthList(futMes);
+  // finanzas por mes (orden por aparición cronológica)
+  var finSorted=fin.slice().filter(function(r){ return isDate(r[2]); }).sort(function(a,b){ return isoOf(a[2]).localeCompare(isoOf(b[2])); });
+  var seen=[]; finSorted.forEach(function(r){ var lbl=mlabel(r[2]); if(lbl && seen.indexOf(lbl)<0) seen.push(lbl); });
+  var fin_mes_l=seen.map(function(lbl){ return {k:lbl, v:pyround(by_month_fin[lbl]||0)}; });
+
+  var med_activos=med_sum.filter(function(m){ return m.estado==='Activo'; });
+
+  return {
+    meta:{generado:TODAY_ISO,archivo:'BDreporte.xlsx',
+      n_citas:citas.length,n_med_registros:med_log.length,n_med_distintos:med_sum.length,
+      n_med_activos:med_activos.length,n_entregas_futuras:_fut_next.length,n_entregas_vencidas:venc.length,
+      n_mov_fin:fin_mov.length,total_gestionado:pyround(tot_gest),total_copagos:pyround(tot_copagos),
+      total_honorarios:pyround(tot_honor),n_copagos:ncop,tarifa_hora:TARIFA_HORA,
+      pendiente_total:pendiente_total,pendiente_lote:max_lote,pendiente_n:pendiente_n,
+      legalizado_total:legalizado_total,pagado_total:pagado_total,n_legalizaciones:legalizaciones.length,
+      sin_corte_total:sin_corte_total,sin_corte_n:sin_corte_n},
+    sin_corte_items:sin_corte_items,
+    paciente:paciente,citas:citas,med_log:med_log,med_sum:med_sum,
+    entregas_futuras:fut,proxima_entrega:proxima_entrega,entregas_pendientes:entregas_pendientes,citas_resumen:citas_resumen,
+    finanzas:fin_mov,legalizaciones:legalizaciones,pendiente_items:pendiente_items,
+    inv_med:[],inv_per:[],inv_meta:{n_med_inv:0,n_med_con_cant:0,n_med_bajo:0,n_per:0,n_per_reponer:0,per_cats:[]},
+    charts:{cit_estado:counterList(cit_estado),cit_esp:counterList(cit_esp),
+      cit_mes:cit_mes_l,ent_mes:ent_mes_l,fut_mes:fut_mes_l,fin_mes:fin_mes_l}
+  };
+}
+
+/* ----- decodificador de celdas gviz ----- */
+function decodeCell(cell){
+  if(cell==null) return null;
+  var v=cell.v;
+  if(v==null||v==='') return null;
+  if(typeof v==='string'){
+    var m=v.match(/^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+)(?:,(\d+))?)?\)$/);
+    if(m){ return new Date(+m[1],+m[2],+m[3],+(m[4]||0),+(m[5]||0),+(m[6]||0)); }
+    return v;
+  }
+  if(Array.isArray(v)){ return {__time:true,h:v[0]||0,m:v[1]||0,s:v[2]||0}; } // timeofday
+  return v; // number/boolean
+}
+function parseGviz(text, ncols){
+  var s=text.indexOf('('), e=text.lastIndexOf(')');
+  var obj=JSON.parse(text.substring(s+1,e));
+  var cols=(obj.table&&obj.table.cols)?obj.table.cols.length:ncols;
+  var rows=[];
+  (obj.table.rows||[]).forEach(function(row){
+    var c=row.c||[], arr=[];
+    for(var i=0;i<cols;i++){ arr.push(decodeCell(c[i])); }
+    // saltar filas totalmente vacías
+    if(arr.some(function(x){ return x!==null && String(x).trim!==undefined && String(x).trim()!==''; })) rows.push(arr);
+  });
+  return rows;
+}
+
+global.PanelSheet={computeDATA:computeDATA,decodeCell:decodeCell,parseGviz:parseGviz,
+  isDate:isDate,isoOf:isoOf,pyround:pyround};
+})(typeof window!=='undefined'?window:globalThis);
+
+var PanelLoad=(function(){
+  var SHEET_ID='15rS_0aZp9vLgOorsyaI3nvvnzu8cZ3Wc46TnPXhaABI';
+  var NCOLS={Paciente:9,Citas:12,Medicamentos:16,Finanzas:15};
+  function ov(html){ var el=document.getElementById('__ov'); if(el){ el.querySelector('.__ovbox').innerHTML=html; } }
+  async function fetchSheet(name){
+    var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&headers=1&sheet='+encodeURIComponent(name);
+    var r=await fetch(url,{cache:'no-store'});
+    if(!r.ok) throw new Error('No se pudo leer la hoja '+name+' (HTTP '+r.status+')');
+    var t=await r.text();
+    return PanelSheet.parseGviz(t, NCOLS[name]);
+  }
+  async function load(){
+    var sheets={};
+    var names=['Paciente','Citas','Medicamentos','Finanzas'];
+    for(var i=0;i<names.length;i++){ sheets[names[i]]=await fetchSheet(names[i]); }
+    return PanelSheet.computeDATA(sheets, new Date());
+  }
+  function showError(err){
+    ov('<h2>No se pudieron cargar los datos</h2>'
+      +'<p>'+((err&&err.message)||String(err))+'</p>'
+      +'<p>Verifica la conexión a internet y que el archivo de datos siga compartido.</p>'
+      +'<button onclick="location.reload()">Reintentar</button>');
+  }
+  function done(){
+    var el=document.getElementById('__ov'); if(el) el.remove();
+    var n=new Date(), hh=('0'+n.getHours()).slice(-2), mm=('0'+n.getMinutes()).slice(-2);
+    var bar=document.createElement('div'); bar.id='__bar';
+    bar.innerHTML='● Datos en vivo · actualizado hoy '+hh+':'+mm+' <button onclick="location.reload()">🔄 Actualizar</button>';
+    document.body.appendChild(bar);
+  }
+  return {load:load, showError:showError, done:done};
+})();
+</script>
+<script>
+async function __run(){
+  var DATA;
+  try{ DATA = await PanelLoad.load(); }
+  catch(err){ PanelLoad.showError(err); return; }
+// Fecha REAL del dispositivo (no la de generación): el conteo se actualiza solo al abrir
+const TODAY = (function(){var d=new Date();d.setHours(0,0,0,0);return d;})();
+// Próxima entrega calculada en vivo contra la fecha real
+function nextDelivery(){
+  var fut=(DATA.entregas_futuras||[]).filter(function(f){return daysFrom(f.fecha)>=0;})
+          .sort(function(a,b){return a.fecha.localeCompare(b.fecha);});
+  if(!fut.length) return null;
+  var fd=fut[0].fecha, items=fut.filter(function(f){return f.fecha===fd;});
+  return {fecha:fd, items:items, dias:daysFrom(fd), mes:items[0].mes||'',
+          rest:fut.length-items.length, sig:(fut.length>items.length?fut[items.length].fecha:null),
+          ultima:fut[fut.length-1].fecha};
+}
+function faltanTxt(dd){ return dd===0?'es hoy':(dd===1?'falta 1 día':'faltan '+dd+' días'); }
+// Entregas VENCIDAS: programadas cuya fecha ya pasó y siguen sin entregar
+function overdueDeliveries(){
+  return (DATA.entregas_futuras||[]).filter(function(f){return daysFrom(f.fecha)<0;})
+         .sort(function(a,b){return a.fecha.localeCompare(b.fecha);});
+}
+function venceTxt(dd){ var n=Math.abs(dd); return n===1?'venció ayer':'venció hace '+n+' días'; }
+const PAL = ['#0d7d8c','#1d6fb8','#7c3aed','#d97706','#0f9d6b','#db2777','#0891b2','#64748b','#b45309','#4f46e5','#0e7490','#be185d'];
+const fmtMoney = n => n==null? '—' : '$'+Math.round(n).toLocaleString('es-CO');
+const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function daysFrom(iso){ if(!iso) return null; const d=new Date(iso+'T00:00:00'); return Math.round((d-TODAY)/86400000); }
+function fmtDate(iso){ if(!iso) return '—'; const [y,m,d]=iso.split('-'); return d+'/'+m+'/'+y; }
+const MES=['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+/* ---------- HEADER ---------- */
+(function(){
+  const p=DATA.paciente;
+  document.getElementById('psub').textContent = 'Generado ' + fmtDate(DATA.meta.generado);
+  document.getElementById('genstamp').innerHTML = '';
+  const chips=[
+    ['Paciente', p.nombre],
+    ['Acudiente', p.acudiente]
+  ];
+  document.getElementById('pchips').innerHTML = chips.map(c=>'<span class="pchip"><b>'+esc(c[0])+':</b> '+esc(c[1])+'</span>').join('');
+})();
+
+/* ---------- KPIs ---------- */
+(function(){
+  const m=DATA.meta;
+  const prox = DATA.entregas_futuras.length;
+  const proxCit = DATA.citas.filter(c=>c.futura).length;
+  const cumpl = DATA.citas.filter(c=>c.cumplida).length;
+  const pe = nextDelivery();
+  const kpis=[
+    {lbl:'Citas totales', num:m.n_citas, foot:cumpl+' realizadas', pct:cumpl/m.n_citas, col:'var(--c2)'},
+    {lbl:'Citas pendientes', num:proxCit, foot:'por agendar / próximas', pct: proxCit/Math.max(m.n_citas,1), col:'var(--c4)'},
+    {lbl:'Medicamentos activos', num:m.n_med_activos, foot:m.n_med_distintos+' fármacos en total', pct:m.n_med_activos/m.n_med_distintos, col:'var(--c1)'},
+    {lbl:'Próxima entrega', num: pe? fmtDate(pe.fecha):'—', foot: (overdueDeliveries().length? ('⚠️ '+overdueDeliveries().length+' vencida(s) sin recibir') : (pe? (faltanTxt(pe.dias)+' · '+pe.items.length+' medicam.'):'—')), pct:1, col: overdueDeliveries().length?'var(--bad)':'var(--c5)', small:true},
+    {lbl:'Registros de entrega', num:m.n_med_registros, foot:'histórico de fórmulas', pct:1, col:'var(--c3)'},
+    {lbl:'Pendiente de pago', num:fmtMoney(m.pendiente_total), foot:'Corte '+m.pendiente_lote+' · '+m.pendiente_n+' gestiones', pct:1, col:'var(--warn)', small:true}
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(k=>
+    '<div class="kpi"><div class="lbl">'+k.lbl+'</div><div class="num" '+(k.small?'style="font-size:22px"':'')+'>'+k.num+'</div>'+
+    '<div class="foot">'+k.foot+'</div><div class="bar"><i style="width:'+Math.round((k.pct||0)*100)+'%;background:'+k.col+'"></i></div></div>').join('');
+})();
+
+/* ---------- RESUMEN: citas pendientes + cobro ---------- */
+(function(){
+  const pend=DATA.citas.filter(c=>c.futura).sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
+  document.getElementById('resPendTitle').textContent='Citas pendientes ('+pend.length+')';
+  const rp=document.getElementById('resPend');
+  if(!pend.length){ rp.innerHTML='<div class="sub2">No hay citas pendientes en este momento.</div>'; }
+  else rp.innerHTML=pend.map(c=>{
+    const est=(c.estado||'').toLowerCase()==='pendiente'?'<span class="badge b-warn">Pendiente</span>':'<span class="badge b-info">Próxima</span>';
+    const note=c.notas? '<details class="note2"><summary>Ver detalle</summary><div>'+esc(c.notas)+'</div></details>':'';
+    return '<div class="pebox" style="border-left-color:var(--c4);margin-bottom:8px"><div class="pehead">'+
+      '<div><div style="font-weight:700">'+esc(c.especialidad)+'</div><div class="sub2">'+esc(c.doctor||'')+(c.sede?' · '+esc(c.sede):'')+'</div></div>'+est+'</div>'+
+      '<div class="sub2">📅 '+esc(c.fecha_txt)+'</div>'+note+'</div>';
+  }).join('');
+
+  const m=DATA.meta, leg=DATA.legalizaciones.find(l=>l.pendiente)||{};
+  let hist='<div class="tbwrap" style="max-height:none;margin-top:10px"><table><thead><tr><th>Corte</th><th>Total</th><th>Estado</th></tr></thead><tbody>';
+  DATA.legalizaciones.slice().reverse().forEach(l=>{
+    const b=l.pendiente?'<span class="badge b-warn sm">Pendiente</span>':'<span class="badge b-ok sm">Legalizada</span>';
+    hist+='<tr><td><b>Corte '+esc(l.lote)+'</b><div class="pill">'+fmtDate(l.desde)+'–'+fmtDate(l.hasta)+'</div></td><td><b>'+fmtMoney(l.total)+'</b></td><td>'+b+'</td></tr>';
+  });
+  hist+='</tbody></table></div>';
+  document.getElementById('resFin').innerHTML=
+    '<div class="sub2">Pendiente de pago · Corte '+esc(leg.lote)+'</div>'+
+    '<div style="font-size:28px;font-weight:800;color:var(--warn);margin:2px 0">'+fmtMoney(m.pendiente_total)+'</div>'+
+    '<div class="sub2">'+m.pendiente_n+' gestiones · '+fmtDate(leg.desde)+' a '+fmtDate(leg.hasta)+'</div>'+hist+
+    '<div class="foothint">Detalle gestión por gestión en la pestaña Finanzas.</div>';
+})();
+
+/* ---------- ENTREGAS VENCIDAS + PROXIMA ENTREGA (en vivo) ---------- */
+(function(){
+  // alerta de vencidas (arriba, en rojo)
+  const ov=overdueDeliveries();
+  let ovHtml='';
+  if(ov.length){
+    ovHtml='<div class="ovbox"><div class="ovhd">⚠️ '+ov.length+' entrega'+(ov.length>1?'s':'')+' vencida'+(ov.length>1?'s':'')+' sin recibir</div>'+
+      ov.map(f=>{const dd=daysFrom(f.fecha);const ent=(f.entrega!=null&&f.duracion!=null)?(f.entrega+'/'+f.duracion):'';
+        return '<div class="ovrow"><span><b>'+esc(f.medicamento)+'</b>'+(ent?' <span class="pill">'+ent+'</span>':'')+'</span>'+
+          '<span class="ovd">'+fmtDate(f.fecha)+' · '+venceTxt(dd)+'</span></div>';}).join('')+
+      '<div class="foothint" style="margin-top:6px">Programadas en la EPS pero aún no entregadas. Conviene reclamarlas.</div></div>';
+  }
+  const pe=nextDelivery();
+  if(!pe){document.getElementById('miniProx').innerHTML=ovHtml+(ov.length?'':'<div class="sub2">No hay entregas futuras registradas.</div>');return;}
+  var _wrap=document.getElementById('miniProx');
+  const cls = pe.dias<=7?'soon':pe.dias<=30?'mid':'far';
+  let items = pe.items.map(f=>{
+    const ent=(f.entrega!=null&&f.duracion!=null)?(f.entrega+'/'+f.duracion):(f.entrega!=null?f.entrega:'—');
+    return '<div class="perow"><div class="pemed">'+esc(f.medicamento)+'</div>'+
+      '<div class="pemeta">Entrega '+esc(ent)+' · '+esc(f.via)+'</div></div>';
+  }).join('');
+  let html='<div class="pebox">'+
+    '<div class="pehead"><div><div class="pedate">'+fmtDate(pe.fecha)+'</div><div class="sub2">'+esc(pe.mes)+'</div></div>'+
+    '<div class="days '+cls+'" style="font-size:15px">'+faltanTxt(pe.dias)+'</div></div>'+
+    '<div class="pelist">'+items+'</div></div>';
+  if(pe.dias<=7) html='<div class="minialert"><b>⏰ '+(pe.dias===0?'Es hoy':'Es esta semana')+'</b> ('+fmtDate(pe.fecha)+')</div>'+html;
+  if(pe.rest>0) html+='<div class="foothint">Hay '+pe.rest+' entregas más programadas hasta '+fmtDate(pe.ultima)+' · la siguiente el '+fmtDate(pe.sig)+'. Todas en la pestaña Medicamentos.</div>';
+  document.getElementById('miniProx').innerHTML=ovHtml+html;
+})();
+
+/* ---------- DONUT citas por estado ---------- */
+const DONUT_PAL=['#0d7d8c','#f59e0b','#7c3aed','#db2777','#0f9d6b','#1d6fb8'];
+function donut(el, data){
+  const total=data.reduce((a,b)=>a+b.v,0); let acc=0; const R=52,C=2*Math.PI*R;
+  let segs='';
+  data.forEach((d,i)=>{
+    const frac=d.v/total, len=frac*C;
+    segs+='<circle r="'+R+'" cx="70" cy="70" fill="none" stroke="'+DONUT_PAL[i%DONUT_PAL.length]+'" stroke-width="20" '+
+      'stroke-dasharray="'+len+' '+(C-len)+'" stroke-dashoffset="'+(-acc)+'" transform="rotate(-90 70 70)" stroke-linecap="butt"></circle>';
+    acc+=len;
+  });
+  const leg=data.map((d,i)=>'<span><i class="dot" style="background:'+DONUT_PAL[i%DONUT_PAL.length]+'"></i>'+esc(d.k)+' · <b>'+d.v+'</b></span>').join('');
+  el.innerHTML='<div class="split"><svg viewBox="0 0 140 140" width="140" height="140">'+segs+
+    '<text x="70" y="66" text-anchor="middle" font-size="26" font-weight="800">'+total+'</text>'+
+    '<text x="70" y="86" text-anchor="middle" font-size="11" fill="#64748b">total</text></svg>'+
+    '<div class="legend">'+leg+'</div></div>';
+}
+donut(document.getElementById('donutEstado'), DATA.charts.cit_estado);
+
+/* ---------- BAR helpers ---------- */
+function hbars(el, data, opt){
+  opt=opt||{};
+  const mx=Math.max.apply(null,data.map(d=>d.v))||1;
+  let html='';
+  data.forEach((d,i)=>{
+    const w=Math.max((d.v/mx)*100,1.5);
+    const col = opt.color? opt.color(d,i) : PAL[i%PAL.length];
+    const val = opt.money? fmtMoney(d.v): d.v;
+    html+='<div class="barrow"><div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+esc(d.k)+'">'+esc(d.k)+'</div>'+
+      '<div class="track"><i style="width:'+w+'%;background:'+col+'"></i></div><div class="vv">'+val+'</div></div>';
+  });
+  el.innerHTML=html;
+}
+hbars(document.getElementById('barCitMes'), DATA.charts.cit_mes, {color:()=>'var(--c2)'});
+/* entregas por mes: separar historico vs futuro por color */
+(function(){
+  const fut=new Set(DATA.charts.fut_mes.map(x=>x.k));
+  const merged={}; const order=[];
+  DATA.charts.ent_mes.forEach(x=>{merged[x.k]=(merged[x.k]||0)+x.v; if(!order.includes(x.k))order.push(x.k);});
+  DATA.charts.fut_mes.forEach(x=>{merged[x.k]=(merged[x.k]||0)+x.v; if(!order.includes(x.k))order.push(x.k);});
+  const arr=order.map(k=>({k, v:merged[k]}));
+  hbars(document.getElementById('barEntMes'), arr, {color:d=> fut.has(d.k)?'var(--c4)':'var(--c1)'});
+  document.getElementById('barEntMes').insertAdjacentHTML('afterend',
+    '<div class="legend"><span><i class="dot" style="background:var(--c1)"></i>Entregado</span><span><i class="dot" style="background:var(--c4)"></i>Programado</span></div>');
+})();
+hbars(document.getElementById('barEsp'), DATA.charts.cit_esp.slice().sort((a,b)=>b.v-a.v));
+hbars(document.getElementById('barFin'), DATA.charts.fin_mes, {money:true,color:()=>'var(--c6)'});
+
+/* ---------- TABS ---------- */
+document.querySelectorAll('#tabs .tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('#tabs .tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  ['resumen','citas','medicamentos','finanzas'].forEach(v=>
+    document.getElementById('v-'+v).classList.toggle('hidden', v!==t.dataset.t));
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* ---------- CITAS: pendientes + resumen realizadas ---------- */
+(function(){
+  const pend=DATA.citas.filter(c=>c.futura).sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
+  const real=DATA.citas.filter(c=>!c.futura);
+  const cr=DATA.citas_resumen;
+
+  /* pendientes en detalle */
+  document.getElementById('citPendTitle').textContent='Citas pendientes ('+pend.length+')';
+  const pc=document.getElementById('citPend');
+  if(!pend.length){ pc.innerHTML='<div class="sub2">No hay citas pendientes en este momento.</div>'; }
+  else pc.innerHTML=pend.map(c=>{
+    const est=(c.estado||'').toLowerCase()==='pendiente'?'<span class="badge b-warn">Pendiente</span>':'<span class="badge b-info">Próxima</span>';
+    const note=c.notas? '<details class="note2"><summary>Ver detalle</summary><div>'+esc(c.notas)+'</div></details>':'';
+    return '<div class="pebox" style="border-left-color:var(--c4);margin-bottom:9px"><div class="pehead">'+
+      '<div><div style="font-weight:700">'+esc(c.especialidad)+'</div><div class="sub2">'+esc(c.doctor||'')+(c.sede?' · '+esc(c.sede):'')+'</div></div>'+est+'</div>'+
+      '<div class="sub2">📅 '+esc(c.fecha_txt)+'</div>'+note+'</div>';
+  }).join('');
+
+  /* resumen realizadas */
+  document.getElementById('citResumen').innerHTML=
+    '<div style="font-size:30px;font-weight:800;letter-spacing:-.5px">'+cr.n_real+'</div>'+
+    '<div class="sub2" style="margin-bottom:10px">citas atendidas</div>'+
+    '<div class="sub2">Período<br><b>'+fmtDate(cr.desde)+'</b> a <b>'+fmtDate(cr.hasta)+'</b></div>'+
+    '<div class="sub2" style="margin-top:8px">'+cr.por_esp.length+' especialidades distintas</div>';
+  hbars(document.getElementById('citRealEsp'), cr.por_esp.slice(0,10), {color:(d,i)=>PAL[i%PAL.length]});
+
+  /* detalle realizadas (tabla) */
+  const esp=[...new Set(real.map(c=>c.especialidad))].sort();
+  const sel=document.getElementById('cEsp');
+  esp.forEach(e=>{const o=document.createElement('option');o.value=e;o.textContent=e;sel.appendChild(o);});
+  let fEsp='', fQ='';
+  function render(){
+    const tb=document.querySelector('#tCitas tbody'); tb.innerHTML='';
+    const sorted=real.slice().sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+    let n=0;
+    sorted.forEach(c=>{
+      if(fEsp&&c.especialidad!==fEsp)return;
+      if(fQ){const hay=(c.doctor+' '+c.sede+' '+c.notas+' '+c.especialidad).toLowerCase();if(!hay.includes(fQ))return;}
+      n++;
+      const note=c.notas? '<div class="notecell"><span class="clip">'+esc(c.notas)+'</span>'+(c.notas.length>120?' <span class="more">ver más</span>':'')+'</div>':'<span class="pill">—</span>';
+      const tr=document.createElement('tr');
+      tr.innerHTML='<td class="nw"><b>'+c.fecha_txt+'</b></td><td>'+esc(c.especialidad)+'</td><td>'+esc(c.doctor||'—')+'</td>'+
+        '<td class="pill">'+esc(c.sede||'—')+'</td><td>'+note+'</td>';
+      const more=tr.querySelector('.more');
+      if(more)more.addEventListener('click',()=>{tr.querySelector('.clip').classList.toggle('clip');more.textContent=more.textContent==='ver más'?'ver menos':'ver más';});
+      tb.appendChild(tr);
+    });
+    document.getElementById('cCount').textContent=n+' de '+real.length+' citas realizadas';
+  }
+  document.getElementById('cSearch').addEventListener('input',e=>{fQ=e.target.value.toLowerCase().trim();render();});
+  sel.addEventListener('change',e=>{fEsp=e.target.value;render();});
+  render();
+})();
+
+/* ---------- MED TILES (agrupadas Activos / Inactivos) ---------- */
+(function(){
+  function tile(m){
+    const b= m.estado==='Activo'?'<span class="badge b-ok">Activo</span>':'<span class="badge b-mut">Inactivo</span>';
+    return '<div class="mtile"><div class="mn">'+esc(m.medicamento)+'</div>'+
+      '<div class="md">'+b+' · '+m.entregas+' entregas</div>'+
+      '<div class="md" style="margin-top:5px">Última: <b>'+fmtDate(m.ultima_entrega)+'</b></div>'+
+      (m.duracion?'<div class="md">Fórmula: '+m.duracion+' meses</div>':'')+'</div>';
+  }
+  function group(titulo, arr, open){
+    if(!arr.length) return '';
+    return '<details class="medgroup"'+(open?' open':'')+'><summary class="medgrouphd">'+titulo+' ('+arr.length+')</summary><div class="stack">'+arr.map(tile).join('')+'</div></details>';
+  }
+  function render(q){
+    q=(q||'').toLowerCase();
+    const filtering=!!q;
+    const rows=DATA.med_sum.filter(m=>m.medicamento.toLowerCase().includes(q));
+    const act=rows.filter(m=>m.estado==='Activo'), ina=rows.filter(m=>m.estado!=='Activo');
+    document.getElementById('medTiles').innerHTML = (group('Activos',act,true)+group('Inactivos',ina,filtering)) || '<div class="sub2">Sin resultados.</div>';
+  }
+  document.getElementById('mSearch').addEventListener('input',e=>render(e.target.value));
+  render('');
+})();
+
+/* ---------- BITACORA agrupada por medicamento ---------- */
+(function(){
+  // agrupar med_log por medicamento
+  const groups={};
+  DATA.med_log.forEach(r=>{ (groups[r.medicamento]=groups[r.medicamento]||[]).push(r); });
+  const names=Object.keys(groups).sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase()));
+  const activoOf={}; names.forEach(n=>activoOf[n]=groups[n].some(r=>r.estado==='Activo'));
+  let fFut=false, fQ='';
+  function buildDetail(name){
+    const rows=groups[name].slice().sort((a,b)=>(b.fecha_hogar||b.fecha_eps||'').localeCompare(a.fecha_hogar||a.fecha_eps||''));
+    const hasFut=rows.some(r=>{const dd=r.fecha_hogar||r.fecha_eps;return dd&&daysFrom(dd)>=0;});
+    if(fFut&&!hasFut)return null;
+    if(fQ&&!name.toLowerCase().includes(fQ))return null;
+    const estb=activoOf[name]?'<span class="badge b-ok">Activo</span>':'<span class="badge b-mut">Inactivo</span>';
+    const dates=rows.map(r=>r.fecha_hogar||r.fecha_eps).filter(Boolean);
+    const last=dates.length?dates.reduce((a,b)=>a>b?a:b):null;
+    let body='<div class="tbwrap" style="max-height:none"><table><thead><tr><th>Entrega</th><th>Cant.</th><th>Fecha</th><th>Próxima</th><th>Comentario</th></tr></thead><tbody>';
+    let nVenc=0;
+    rows.forEach(r=>{
+      const dd=r.fecha_hogar||r.fecha_eps;
+      const delivered=!!r.fecha_hogar || (r.cant_hogar!=null && r.cant_hogar>0);
+      const sched=r.fecha_eps;
+      const venc = activoOf[name] && !delivered && sched && daysFrom(sched)<0;
+      const isFut = !venc && dd && daysFrom(dd)>=0;
+      if(venc) nVenc++;
+      const badge = venc ? ' <span class="badge b-bad sm">⚠ Venció sin entregar</span>'
+                   : (isFut ? ' <span class="badge b-info sm">prog.</span>' : '');
+      const ent=(r.entrega_actual!=null&&r.duracion!=null)?(r.entrega_actual+'/'+r.duracion):(r.entrega_actual!=null?r.entrega_actual:'—');
+      const com=r.comentario?'<details class="note2"><summary>ver</summary><div>'+esc(r.comentario)+'</div></details>':'<span class="pill">—</span>';
+      body+='<tr'+(venc?' style="background:#fef2f2"':'')+'><td>'+ent+'</td><td>'+(r.cant_hogar??r.cant_eps??'—')+'</td>'+
+        '<td class="nw">'+fmtDate(dd)+badge+'</td>'+
+        '<td class="pill nw">'+(r.proxima?fmtDate(r.proxima):'—')+'</td><td>'+com+'</td></tr>';
+    });
+    body+='</tbody></table></div>';
+    const vb = nVenc ? '<span class="badge b-bad" style="margin-left:6px">⚠ '+nVenc+' vencida'+(nVenc>1?'s':'')+' sin entregar</span>' : '';
+    const d=document.createElement('details'); d.className='medgrp'; if(nVenc) d.open=true;
+    d.innerHTML='<summary><span class="gname">'+esc(name)+'</span>'+estb+vb+
+      '<span class="gc">'+rows.length+' entregas'+(last?' · última '+fmtDate(last):'')+'</span>'+
+      '<span class="chev">▼</span></summary><div class="gbody">'+body+'</div>';
+    return d;
+  }
+  function render(){
+    const cont=document.getElementById('medGroups'); cont.innerHTML=''; let shown=0;
+    const filtering=!!(fFut||fQ);
+    [['Activos',names.filter(n=>activoOf[n]),true],['Inactivos',names.filter(n=>!activoOf[n]),false]].forEach(([titulo,ns,open])=>{
+      const dets=ns.map(buildDetail).filter(Boolean);
+      if(!dets.length) return;
+      const grp=document.createElement('details'); grp.className='medgroup'; if(open||filtering) grp.open=true;
+      const sum=document.createElement('summary'); sum.className='medgrouphd'; sum.textContent=titulo+' ('+dets.length+')';
+      grp.appendChild(sum);
+      dets.forEach(d=>{grp.appendChild(d); shown++;});
+      cont.appendChild(grp);
+    });
+    document.getElementById('mlCount').textContent=shown+' de '+names.length+' medicamentos · '+DATA.med_log.length+' entregas en total';
+  }
+  document.getElementById('mlSearch').addEventListener('input',e=>{fQ=e.target.value.toLowerCase().trim();render();});
+  document.querySelectorAll('[data-ml]').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('[data-ml]').forEach(x=>x.classList.remove('active'));b.classList.add('active');fFut=b.dataset.ml==='fut';render();}));
+  render();
+})();
+
+/* ---------- FINANZAS ---------- */
+(function(){
+  const m=DATA.meta;
+  const fk=[
+    {lbl:'Pendiente de pago', num:fmtMoney(m.pendiente_total), foot:'Corte '+m.pendiente_lote+' · '+m.pendiente_n+' gestiones', col:'var(--warn)', hi:true},
+    {lbl:'Total legalizado', num:fmtMoney(m.legalizado_total), foot:m.n_legalizaciones+' cortes · pagado '+fmtMoney(m.pagado_total), col:'var(--ok)'},
+    {lbl:'Total gestionado', num:fmtMoney(m.total_gestionado), foot:'honorarios '+fmtMoney(m.total_honorarios)+' + copagos '+fmtMoney(m.total_copagos), col:'var(--c7)'}
+  ];
+  document.getElementById('finKpis').innerHTML=fk.map(k=>
+    '<div class="kpi"'+(k.hi?' style="border-color:#fed7aa;background:#fffbf5"':'')+'><div class="lbl">'+k.lbl+'</div>'+
+    '<div class="num" style="font-size:23px;color:'+k.col+'">'+k.num+'</div><div class="foot">'+k.foot+'</div>'+
+    '<div class="bar"><i style="width:100%;background:'+k.col+'"></i></div></div>').join('');
+  /* nota: gestiones registradas pero aún sin corte asignado (la diferencia gestionado − legalizado) */
+  const scEl=document.getElementById('sinCorte');
+  if(scEl){
+    if(m.sin_corte_total>0){
+      const items=(DATA.sin_corte_items||[]);
+      const fechas=items.map(x=>x.fecha_txt.split(' ')[0]).join(', ');
+      const det=items.map(x=>'<div style="display:flex;justify-content:space-between;gap:12px;padding:3px 0"><span>'+esc(x.fecha_txt.split(' ')[0])+' · '+esc(x.descripcion||'—')+'</span><b class="nw">'+fmtMoney(x.total)+'</b></div>').join('');
+      scEl.innerHTML='<div class="scbox">⚠️ Del <b>Total gestionado</b> hay <b>'+fmtMoney(m.sin_corte_total)+'</b> en '+m.sin_corte_n+' gestión'+(m.sin_corte_n>1?'es':'')+' <b>sin corte asignado</b> ('+esc(fechas)+'). Aún no entra'+(m.sin_corte_n>1?'n':'')+' en ninguna legalización; ponle su número en la columna Legalización del Excel y desaparece esta diferencia.'+
+        '<details style="margin-top:6px"><summary style="cursor:pointer;color:#9a3412;font-weight:600">Ver gestión'+(m.sin_corte_n>1?'es':'')+'</summary><div style="margin-top:6px;font-size:13px">'+det+'</div></details></div>';
+    } else {
+      scEl.innerHTML='<div class="scbox ok">✓ Todo lo gestionado está asignado a un corte. Gestionado y legalizado cuadran.</div>';
+    }
+  }
+
+  /* corte pendiente: encabezado + detalle */
+  const leg=DATA.legalizaciones.find(l=>l.pendiente)||{};
+  document.getElementById('pendHead').innerHTML=
+    '<h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">Legalización pendiente de pago · Corte '+esc(leg.lote)+
+    ' <span class="badge b-warn">Sin pagar</span></h3>'+
+    '<div style="font-size:26px;font-weight:800;color:var(--warn);margin:6px 0 2px">'+fmtMoney(m.pendiente_total)+'</div>'+
+    '<div class="sub2">Período '+fmtDate(leg.desde)+' – '+fmtDate(leg.hasta)+' · '+leg.n+' gestiones · '+leg.horas+' h × '+fmtMoney(m.tarifa_hora)+' + copagos '+fmtMoney(leg.copagos)+'</div>';
+  const tp=document.querySelector('#tPend tbody');
+  DATA.pendiente_items.forEach(f=>{
+    const cop= f.copago!=null? fmtMoney(f.copago) : '<span class="pill">—</span>';
+    const hon= f.horas? fmtMoney(f.honorarios) : '<span class="pill">—</span>';
+    const com=f.descripcion?'<div class="notecell"><span class="clip">'+esc(f.descripcion)+'</span>'+(f.descripcion.length>110?' <span class="more">ver más</span>':'')+'</div>':'—';
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td class="nw"><b>'+f.fecha_txt+'</b></td><td>'+(f.horas||'—')+'</td><td>'+hon+'</td><td>'+cop+'</td><td><b>'+fmtMoney(f.total)+'</b></td><td>'+com+'</td>';
+    const more=tr.querySelector('.more');
+    if(more)more.addEventListener('click',()=>{tr.querySelector('.clip').classList.toggle('clip');more.textContent=more.textContent==='ver más'?'ver menos':'ver más';});
+    tp.appendChild(tr);
+  });
+
+  /* historial de legalizaciones */
+  const tl=document.querySelector('#tLeg tbody');
+  DATA.legalizaciones.slice().reverse().forEach(l=>{
+    const est=l.pendiente?'<span class="badge b-warn">Pendiente de pago</span>':'<span class="badge b-ok">Legalizada</span>';
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td><b>Corte '+esc(l.lote)+'</b></td><td class="pill">'+fmtDate(l.desde)+' – '+fmtDate(l.hasta)+'</td>'+
+      '<td>'+l.horas+' h</td><td>'+fmtMoney(l.honorarios)+'</td><td>'+fmtMoney(l.copagos)+'</td><td><b>'+fmtMoney(l.total)+'</b></td><td>'+est+'</td>';
+    tl.appendChild(tr);
+  });
+
+  hbars(document.getElementById('barFin2'), DATA.charts.fin_mes, {money:true,color:()=>'var(--c6)'});
+
+  /* tabla completa con detalle de costos desplegable por gestión */
+  const pendLote=m.pendiente_lote, TARIFA=m.tarifa_hora;
+  function costDetail(f){
+    const L=(k,v)=>'<div class="crow"><span>'+k+'</span><span>'+v+'</span></div>';
+    const horario = f.hora_ini? f.hora_ini+' – '+f.hora_fin+' · '+f.minutos+' min ('+f.horas+' h)' : 'sin horario registrado';
+    let h='<div class="costbox">';
+    h+=L('Horario', horario);
+    h+=L('Honorarios', f.horas? (f.horas+' h × '+fmtMoney(TARIFA)+' = <b>'+fmtMoney(f.honorarios)+'</b>') : '—');
+    h+=L('Copago', f.copago!=null? fmtMoney(f.copago) : '—');
+    h+=L('<b>Total gestión</b>', '<b style="color:var(--brand)">'+fmtMoney(f.total)+'</b>');
+    if(f.descripcion) h+='<div class="cdesc">'+esc(f.descripcion)+'</div>';
+    h+='</div>';
+    return h;
+  }
+  let fQ='', fOnly=false;
+  function render(){
+    const tb=document.querySelector('#tFin tbody');tb.innerHTML='';let n=0;
+    DATA.finanzas.forEach(f=>{
+      if(fOnly&&f.lote!==pendLote)return;
+      if(fQ&&!(f.descripcion||'').toLowerCase().includes(fQ))return;n++;
+      const est= f.lote==null?'<span class="badge b-mut sm">Sin corte</span>':(f.lote===pendLote?'<span class="badge b-warn sm">Pendiente</span>':'<span class="badge b-ok sm">Pagada</span>');
+      const tr=document.createElement('tr'); tr.className='clk';
+      tr.innerHTML='<td class="cx">▸</td><td class="nw"><b>'+f.fecha_txt+'</b></td><td class="nw"><b>'+fmtMoney(f.total)+'</b></td><td class="pill">Corte '+(f.lote??'—')+'</td><td>'+est+'</td>';
+      const det=document.createElement('tr'); det.className='detrow hidden';
+      det.innerHTML='<td></td><td colspan="4">'+costDetail(f)+'</td>';
+      tr.addEventListener('click',()=>{det.classList.toggle('hidden');tr.querySelector('.cx').textContent=det.classList.contains('hidden')?'▸':'▾';});
+      tb.appendChild(tr); tb.appendChild(det);
+    });
+    document.getElementById('fCount').textContent=n+' de '+DATA.finanzas.length+' gestiones';
+  }
+  document.getElementById('fSearch').addEventListener('input',e=>{fQ=e.target.value.toLowerCase().trim();render();});
+  document.querySelectorAll('[data-fl]').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('[data-fl]').forEach(x=>x.classList.remove('active'));b.classList.add('active');fOnly=b.dataset.fl==='pend';render();}));
+  render();
+})();
+
+document.getElementById('footer').innerHTML =
+  'Panel generado a partir de <b>'+esc(DATA.meta.archivo)+'</b> · datos al '+fmtDate(DATA.meta.generado)+
+  '.<br>Esta es una herramienta de organización, no un documento clínico. Verifica siempre fechas y dosis con la EPS y el médico tratante.';
+
+  PanelLoad.done();
+}
+__run();
+</script>
+</body>
+</html>
