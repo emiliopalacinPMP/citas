@@ -1,13 +1,14 @@
 {
-  "name": "Panel de Cuidado · María Stella",
-  "short_name": "Cuidado",
-  "start_url": "panel-cuidado.html",
+  "name": "A Tiempo",
+  "short_name": "A Tiempo",
+  "description": "Panel de cuidado: citas y medicamentos",
+  "start_url": "abrir.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#eef2f7",
+  "background_color": "#0d7d8c",
   "theme_color": "#0d7d8c",
   "icons": [
     { "src": "icon-panel.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icon-panel.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "icon-panel.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
   ]
 }
